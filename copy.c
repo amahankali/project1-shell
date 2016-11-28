@@ -9,7 +9,8 @@ int helper();
 int main(){
   int f = fork();
   int status;
-  wait(&status);
+  int ans = wait(&status);
+  if(ans == -1) return 0;
   helper();
   return 0;
 }
@@ -37,6 +38,11 @@ int helper(){
   {
     realArgs[j] = ans[j];
     //printf("%s\n", realArgs[j]);
+  }
+
+  if(strcmp(realArgs[0], "exit") == 0)
+  {
+    exit(1);
   }
 
   int ret = execvp(realArgs[0], realArgs);
