@@ -2,6 +2,7 @@
 #include <stdlib.h>
 #include <string.h>
 #include <unistd.h>
+#include <errno.h>
 
 int helper();
 
@@ -14,7 +15,6 @@ int main(){
 }
 
 int helper(){
-  int h = 1;
   printf("What would you like to do? ");
   char *a = calloc(1, 256);
   fgets(a, 255, stdin);
@@ -30,9 +30,17 @@ int helper(){
     i++;
   }
   ans[i] = 0;
-  execvp(ans[0], ans);
-  if(h){
-    helper();
+
+  char* realArgs[i + 1];
+  int j = 0;
+  for(;j <= i; j++)
+  {
+    realArgs[j] = ans[j];
+    //printf("%s\n", realArgs[j]);
   }
+
+  int ret = execvp(realArgs[0], realArgs);
+  if(ret) printf("-bash: %s: command not found\n", realArgs[0]);
+
   return 1;
 }
