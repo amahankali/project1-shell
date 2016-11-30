@@ -25,8 +25,9 @@ int helper(){
   //printf("%s", a);
  
   *(strchr(a, '\n')) = 0;
-  while(a!=NULL){
+  while(a){
     char *s = strsep(&a, ";");
+    printf("%s\n", s);
     stringer(s);
   }
   return 1;
@@ -54,7 +55,7 @@ int stringer(char *a){
     *(n+j-1) = 0;
   }
   i=0;
-  while(n != NULL){ 
+  while(n){ 
     char *s;
     s = strsep(&n, " ");
     ans[i] = s;
