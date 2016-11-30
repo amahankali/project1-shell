@@ -23,12 +23,21 @@ int helper(){
   char *a = calloc(1, 256);
   fgets(a, 255, stdin);
   //printf("%s", a);
+
+  char* ans[50];
  
   *(strchr(a, '\n')) = 0;
+  int i;
   while(a){
     char *s = strsep(&a, ";");
-    printf("%s\n", s);
-    stringer(s);
+    ans[i] = s;
+    i++;
+  }
+  int n;
+  printf("%d", i);
+  for(n = 0; n<i; n++){
+    printf("%s", ans[n]);
+    stringer(ans[n]);
   }
   return 1;
 }
