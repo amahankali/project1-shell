@@ -6,7 +6,9 @@
 
 int helper();
 
+
 int main(){
+  
   int f = fork();
   int status;
   int ans = wait(&status);
@@ -20,33 +22,39 @@ int helper(){
   char *a = calloc(1, 256);
   fgets(a, 255, stdin);
   //printf("%s", a);
-  char *s;
-  char *ans[20];
+  char *ans[50];
   *(strchr(a, '\n')) = 0;
+  char *n = calloc(1, strlen(a));
   int i = 0;
-  while(a != NULL){
-    s = strsep(&a, " ");
+  int j = 0;
+  while(*(a+i)){
+    if ((*(a + i) == ' ' && j == 0) ||
+	(i!=0 && *(a + i - 1) == ' ' && *(a + i) == ' ')){
+      i++;
+      printf("s");
+      continue;
+    }
+    *(n+j) = *(a+i);
+    i++;
+    j++;
+  }
+  i=0;
+  while(n != NULL){ 
+    char *s;
+    s = strsep(&n, " ");
     ans[i] = s;
     //printf("%s %s\n", s, ans[i]);
     i++;
   }
+  
   ans[i] = 0;
+    
+  if(strcmp(ans[0], "exit") == 0)
+    {
+      exit(1);
+    }
 
-  char* realArgs[i + 1];
-  int j = 0;
-  for(;j <= i; j++)
-  {
-    realArgs[j] = ans[j];
-    //printf("%s\n", realArgs[j]);
-  }
-
-  if(strcmp(realArgs[0], "exit") == 0)
-  {
-    exit(1);
-  }
-
-  int ret = execvp(realArgs[0], realArgs);
-  if(ret) printf("-bash: %s: command not found\n", realArgs[0]);
-
+  int ret = execvp(ans[0], ans);
+  if(ret) printf("-bash: %s: command not found\n", ans[0]);
   return 1;
 }
