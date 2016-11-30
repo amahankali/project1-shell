@@ -6,6 +6,7 @@
 
 int helper();
 
+int stringer(char *a);
 
 int main(){
   
@@ -22,21 +23,35 @@ int helper(){
   char *a = calloc(1, 256);
   fgets(a, 255, stdin);
   //printf("%s", a);
-  char *ans[50];
+ 
   *(strchr(a, '\n')) = 0;
+  while(a!=NULL){
+    char *s = strsep(&a, ";");
+    stringer(s);
+  }
+  return 1;
+}
+
+int stringer(char *a){
+  char *ans[50];
   char *n = calloc(1, strlen(a));
-  int i = 0;
-  int j = 0;
+  int i=0;
+  int j=0;
   while(*(a+i)){
     if ((*(a + i) == ' ' && j == 0) ||
 	(i!=0 && *(a + i - 1) == ' ' && *(a + i) == ' ')){
       i++;
-      printf("s");
       continue;
+    }else{
+      *(n+j) = *(a+i);
+      i++;
+      j++;
     }
-    *(n+j) = *(a+i);
-    i++;
-    j++;
+  }
+  
+  if(j > 0 && *(n+j - 1)  == ' '){
+    printf("s");
+    *(n+j-1) = 0;
   }
   i=0;
   while(n != NULL){ 
