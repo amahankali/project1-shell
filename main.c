@@ -3,9 +3,10 @@
 #include <string.h>
 #include <unistd.h>
 #include <errno.h>
+#include <signal.h>
 
 #define MAXCOMMANDS 50
-
+int reply = 0;
 
 int singleCommand(char* command);
 
@@ -13,6 +14,7 @@ int main () {
 
 	while(1) //inside of while loop reads one-line instruction, splits it by ';', and gives the pieces to singleCommand function
 	{
+	        if(reply == -1){return 0;}
 		printf("What would you like to do? ");
 		char *a = (char *) calloc(1, 256);
 		fgets(a, 255, stdin);
@@ -33,9 +35,12 @@ int main () {
 		{
 			int f = fork();
 			int status;
-			int reply = wait(&status);
-			if(f == 0) singleCommand(ans[n]);
-			if(reply == -1) return 0;
+			if(reply == -1){ exit(1); return 0;}
+			reply = wait(&status);
+			if(f == 0) {
+			  singleCommand(ans[n]);
+			    
+			}
 		}
 	}
 
@@ -79,8 +84,9 @@ int singleCommand(char* a) {
     
   	if(strcmp(ans[0], "exit") == 0)
   	{
-    	printf("exiting from child\n");
-      	exit(1); //i think this only exits from the child process
+	  kill(getppid(), SIGUSR1);
+	  return -5;
+	  ;//i think this only exits from the child process
   	}
 
   	int ret = execvp(ans[0], ans);
