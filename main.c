@@ -4,6 +4,7 @@
 #include <unistd.h>
 #include <errno.h>
 #include <signal.h>
+#include <fcntl.h>
 
 #define MAXCOMMANDS 50
 int reply = 0;
@@ -39,9 +40,23 @@ int main () {
 			reply = wait(&status);
 			if(f == 0) {
 			  singleCommand(ans[n]);
-			    
 			}
+      if(WIFSIGNALED(status))
+      {
+
+        //printf("cd signal sent successfully\n");
+        char* dir = (char *) calloc(1, 50);
+        int fd = open("auxfile.txt", O_RDONLY);
+        read(fd, dir, 49);
+        close(fd);
+
+        //have to deal with special case of dir being empty string
+        chdir(dir);
+        free(dir);
+      }
 		}
+
+
 	}
 
 	return 0;
@@ -84,13 +99,25 @@ int singleCommand(char* a) {
 
   	if(strcmp(ans[0], "cd") == 0)
   	{
-  		if(strcmp(ans[1], "") != 0 && strcmp(ans[1], " ") != 0)
-  		{
-  			int ret = chdir(ans[1]);
-  			if(ret) printf("-bash: cd: directory not changed because: %s\n", strerror(errno));
-  			else printf("%s\n", ans[1]);
-  		}
-  		exit(0);
+      //printf("%s\n", ans[1]);
+
+      //prints ans[1] to an auxiliary file. 
+      //then uses exit(3) and WIFEXITED to inform parent process that cd was used
+      //finally, parent uses aux file to use chdir
+      if(ans[1] == NULL)
+      {
+        //printf("clearing\n");
+        int fd = open("auxfile.txt", O_CREAT | O_TRUNC, 0644);
+        close(fd);
+        kill(getpid(), SIGTERM);
+      }
+      else
+      {
+        int fd = open("auxfile.txt", O_CREAT | O_TRUNC | O_WRONLY, 0644);
+        write(fd, ans[1], strlen(ans[1]));
+        close(fd);
+        kill(getpid(), SIGTERM);
+      }
   	}
   	if(strcmp(ans[0], "exit") == 0)
   	{
