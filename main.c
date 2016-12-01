@@ -30,6 +30,7 @@ int main () {
 			ans[i] = s;
 			i++;
 		}
+    free(a);
 
 		int n = 0;
 		for(; n < i; n++)
