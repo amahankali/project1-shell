@@ -81,12 +81,21 @@ int singleCommand(char* a) {
   	}
   
   	ans[i] = 0;
-    
+
+  	if(strcmp(ans[0], "cd") == 0)
+  	{
+  		if(strcmp(ans[1], "") != 0 && strcmp(ans[1], " ") != 0)
+  		{
+  			int ret = chdir(ans[1]);
+  			if(ret) printf("-bash: cd: directory not changed because: %s\n", strerror(errno));
+  			else printf("%s\n", ans[1]);
+  		}
+  		exit(0);
+  	}
   	if(strcmp(ans[0], "exit") == 0)
   	{
 	  kill(getppid(), SIGUSR1);
-	  return -5;
-	  ;//i think this only exits from the child process
+	  exit(0);
   	}
 
   	int ret = execvp(ans[0], ans);
