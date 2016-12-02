@@ -6,51 +6,10 @@
 #include <signal.h>
 #include <limits.h>
 #include <fcntl.h>
-#include "pipe.h"
 
-#define MAXCOMMANDS 50
-int reply = 0;
+int piper(char *a);
 
-int singleCommand(char* command);
-
-int main () {
-
-	while(1) //inside of while loop reads one-line instruction, splits it by ';', and gives the pieces to singleCommand function
-	{
-
-        if(reply == -1){return 0;}
-        char buff[PATH_MAX + 1];
-        char *dir = getcwd(buff, PATH_MAX);
-        printf("%s: ", dir);
-        char *a = (char *) calloc(1, 256);
-        fgets(a, 255, stdin);
-        
-        char* ans[MAXCOMMANDS];
-        *(strchr(a, '\n')) = 0;
-        int i = 0;
-		while(a)
-		{
-			char *s = strsep(&a, ";");
-			ans[i] = s;
-			i++;
-		}
-    free(a);
-
-		int n = 0;
-		for(; n < i; n++)
-		{
-            singleCommand(ans[n]);
-
-		}
-
-
-	}
-
-	return 0;
-}
-
-
-int singleCommand(char* a) {
+int run(char* a) {
 	char *ans[50];
 	char *n = calloc(1, strlen(a));
 	int i=0;
@@ -79,7 +38,7 @@ int singleCommand(char* a) {
         }
         i++;
     }
-    i=0;
+    i = 0;
   	while(n){ 
     	char *s;
     	s = strsep(&n, " ");
@@ -125,7 +84,7 @@ int singleCommand(char* a) {
   	    if(ret) printf("-bash: %s: command not found\n", ans[0]);
         exit(0); 
     }else{
-        reply = wait(&status);
+        int reply = wait(&status);
     }
 //maybe we should use the exit function here as well
                                                             //otherwise, the forked version could be the one continuing
@@ -134,3 +93,29 @@ int singleCommand(char* a) {
 
 }
 
+int piper(char *a){
+    char *second = (char *)malloc(256);
+    second = strsep(&a, "|");
+    int arr[2];
+    pipe(arr);
+    //int out = dup(STDOUT_FILENO);
+    int in = dup(STDIN_FILENO);
+    int status;
+    int f = fork();
+    if (f == 0){
+        close(arr[0]);
+        dup2(arr[1], STDOUT_FILENO); 
+        close(arr[0]);
+        run(second);
+        exit(0);
+    } 
+    else{
+        wait(&status);
+        dup2(arr[0], STDIN_FILENO);
+        close(arr[1]);
+        run(a);
+        dup2(in, STDIN_FILENO);
+    }
+  //free(line2);
+    return 1;
+}
