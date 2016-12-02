@@ -8,7 +8,6 @@
 #include <fcntl.h>
 #include "pipe.h"
 
-#define MAXCOMMANDS 50
 int reply = 0;
 
 int singleCommand(char* command);
@@ -39,7 +38,7 @@ int main () {
 		int n = 0;
 		for(; n < i; n++)
 		{
-            singleCommand(ans[n]);
+            run(ans[n]);
 
 		}
 
@@ -133,4 +132,5 @@ int singleCommand(char* a) {
   	return 1;
 
 }
+
 

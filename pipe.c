@@ -7,6 +7,8 @@
 #include <limits.h>
 #include <fcntl.h>
 
+#define MAXCOMMANDS 50
+
 int piper(char *a);
 
 int run(char* a) {
@@ -51,45 +53,65 @@ int run(char* a) {
 
   	if(strcmp(ans[0], "cd") == 0)
   	{
-        /*char *dir = calloc(PATH_MAX + 1, 1);
-        char buff[PATH_MAX + 1];
-        dir = getcwd(buff, PATH_MAX);
-        *(dir + strlen(dir)) = '/';
-        char *newdir = strcat(dir, ans[1]);*/
         printf("%s\n", ans[1]);
         chdir(ans[1]);
         return 1;
-    }/*if(ans[1] == NULL)
-      {
-        //printf("clearing\n");
-        int fd = open("auxfile.txt", O_CREAT | O_TRUNC, 0644);
-        close(fd);
-        kill(getpid(), SIGTERM);
-      }
-      else
-      {
-        int fd = open("auxfile.txt", O_CREAT | O_TRUNC | O_WRONLY, 0644);
-        write(fd, ans[1], strlen(ans[1]));
-        close(fd);
-        kill(getpid(), SIGTERM);
-      }*/
+    }
   	if(strcmp(ans[0], "exit") == 0)
   	{
         exit(0);
-  	}    
+  	}
+
+    ///////////////////////////Do redirection///////////////////////////
     int f = fork();
     int status;
-    if(f == 0) {
-        int ret = execvp(ans[0], ans);
-  	    if(ret) printf("-bash: %s: command not found\n", ans[0]);
-        exit(0); 
-    }else{
-        int reply = wait(&status);
+    if(f == 0)
+    {
+      char* buffer[MAXCOMMANDS];
+      int j = 0;
+      int bufferLen = 0;
+
+      int currentStdInDes = 0;
+      int currentStdOutDes = 1;
+
+      for(; j < i;)
+      {
+        char* token = ans[j];
+        if(strcmp(token, ">") == 0)
+        {
+          //reset stdout
+          char* outFile = ans[j + 1];
+          int newFD = open(outFile, O_TRUNC | O_WRONLY | O_RDONLY);
+          dup2(newFD, currentStdOutDes);
+          currentStdOutDes = newFD;
+          j += 2;
+        }
+        else if(strcmp(token, "<") == 0)
+        {
+          char* inFile = ans[j + 1];
+          int newFD = open(inFile, O_RDONLY);
+          dup2(newFD, currentStdInDes);
+          currentStdInDes = newFD;
+          j += 2;
+        }
+        else
+        {
+          buffer[bufferLen] = ans[j];
+          bufferLen++;
+          j++;
+        }
+      }
+      buffer[j] = 0;
+
+      int ret = execvp(buffer[0], buffer);
+      if(ret) printf("-bash: %s: command not found\n", buffer[0]);
+      exit(0);
     }
-//maybe we should use the exit function here as well
-                                                            //otherwise, the forked version could be the one continuing
-    //should exit from forked version in case execvp did not work
-  	return 1;
+    else {int reply = wait(&status);}
+    ////////////////////////////////////////////////////////////////////
+
+    return 1;
+
 
 }
 
