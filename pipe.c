@@ -9,6 +9,13 @@
 
 #define MAXCOMMANDS 50
 
+void print(char* a[], int length)
+{
+  int i = 0;
+  for(; i < length; i++) printf("a[%d]: %s; ", i, a[i]);
+  printf("\n");
+}
+
 int piper(char *a);
 
 int run(char* a) {
@@ -71,27 +78,21 @@ int run(char* a) {
       int j = 0;
       int bufferLen = 0;
 
-      int currentStdInDes = 0;
-      int currentStdOutDes = 1;
-
       for(; j < i;)
       {
         char* token = ans[j];
         if(strcmp(token, ">") == 0)
         {
-          //reset stdout
           char* outFile = ans[j + 1];
           int newFD = open(outFile, O_TRUNC | O_WRONLY | O_RDONLY);
-          dup2(newFD, currentStdOutDes);
-          currentStdOutDes = newFD;
+          dup2(newFD, 1);
           j += 2;
         }
         else if(strcmp(token, "<") == 0)
         {
           char* inFile = ans[j + 1];
           int newFD = open(inFile, O_RDONLY);
-          dup2(newFD, currentStdInDes);
-          currentStdInDes = newFD;
+          dup2(newFD, 0);
           j += 2;
         }
         else
@@ -101,7 +102,7 @@ int run(char* a) {
           j++;
         }
       }
-      buffer[j] = 0;
+      buffer[bufferLen] = 0;
 
       int ret = execvp(buffer[0], buffer);
       if(ret) printf("-bash: %s: command not found\n", buffer[0]);
