@@ -60,7 +60,7 @@ int run(char* a) {
 
   	if(strcmp(ans[0], "cd") == 0)
   	{
-        printf("%s\n", ans[1]);
+        //printf("%s\n", ans[1]);
         chdir(ans[1]);
         return 1;
     }
