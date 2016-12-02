@@ -103,9 +103,7 @@ int piper(char *a){
     int status;
     int f = fork();
     if (f == 0){
-        close(arr[0]);
         dup2(arr[1], STDOUT_FILENO); 
-        close(arr[0]);
         run(second);
         exit(0);
     } 
