@@ -5,6 +5,7 @@
 #include <errno.h>
 #include <signal.h>
 #include <limits.h>
+#include <time.h>
 #include <fcntl.h>
 #include "pipe.h"
 
@@ -13,7 +14,11 @@ int reply = 0;
 int singleCommand(char* command);
 
 int main () {
-
+    system("clear");
+    printf("Shell—Version 1.0\n");
+    printf("An Arvind Mahankali-Brandon Huang-Will Ostlund Project\n");
+    printf("We hope you enjoy! :)\n");
+    chdir(getenv("HOME"));
 	while(1) //inside of while loop reads one-line instruction, splits it by ';', and gives the pieces to singleCommand function
 	{
 

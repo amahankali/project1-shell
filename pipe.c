@@ -23,6 +23,12 @@ int run(char* a) {
 	char *n = calloc(1, strlen(a));
 	int i=0;
 	int j=0;
+    if((*a == 'e' || *a == 'E') && (*(a + 1) == 'c' || *(a + 1) == 'C')
+       && (*(a + 2) == 'h' || *(a + 2) == 'H') && (*(a + 3) == 'o' || *(a + 3) == 'O')){
+        strsep(&a, " ");
+        printf("%s\n",a);
+        return 1;
+    }
 	while(*(a+i)){
  		if ((*(a + i) == ' ' && j == 0) ||
 			(i!=0 && *(a + i - 1) == ' ' && *(a + i) == ' ')){
@@ -61,7 +67,12 @@ int run(char* a) {
   	if(strcmp(ans[0], "cd") == 0)
   	{
         //printf("%s\n", ans[1]);
-        chdir(ans[1]);
+        if(ans[1] == NULL || !strcmp(ans[1],"~")){
+            chdir(getenv("HOME"));
+        }
+        else if(chdir(ans[1])!=0){
+            printf("Error: No such directory\n");
+        }
         return 1;
     }
   	if(strcmp(ans[0], "exit") == 0)
