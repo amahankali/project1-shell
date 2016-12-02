@@ -96,7 +96,12 @@ int run(char* a) {
         if(strcmp(token, ">") == 0)
         {
           char* outFile = ans[j + 1];
-          int newFD = open(outFile, O_TRUNC | O_WRONLY | O_RDONLY);
+          int newFD = open(outFile, O_TRUNC | O_WRONLY | O_RDONLY | O_CREAT, 0644);
+          if(newFD == -1)
+          {
+            printf("-bash: error: %s\n", strerror(errno));
+            exit(0);
+          }
           dup2(newFD, 1);
           j += 2;
         }
@@ -104,6 +109,11 @@ int run(char* a) {
         {
           char* inFile = ans[j + 1];
           int newFD = open(inFile, O_RDONLY);
+          if(newFD == -1)
+          {
+            printf("-bash: %s: %s\n", inFile, strerror(errno));
+            exit(0);
+          }
           dup2(newFD, 0);
           j += 2;
         }
