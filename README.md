@@ -18,8 +18,10 @@ Bugs
 -After thorough testing, none that we know of
 
 Functions
--In main.c
-    main(): Starts by clearing the terminal and immediately 
+
+In main.c
+    main(): 
+    Starts by clearing the terminal and immediately 
     redirects to route. From there, it prints out the current 
     directory and asks for user input. It records this 
     information using the fgets function then uses the strsep
@@ -30,7 +32,8 @@ Functions
         -Parameters: none
         -Returns: an integer to terminate the function
 
-    noAdjSymbol(char* command): The goal of this function is to
+noAdjSymbol(char* command): 
+    The goal of this function is to
     catch syntax errors that arise from redirection and piping. If
     there is a "|" character at the beginning of the string provided
     in the command line, or if there is a ">" or "<" character directly
@@ -43,3 +46,22 @@ Functions
         a syntax error of the form above, and 0 otherwise.
         
 -In pipe.c
+    
+void print(char* a[], int length): 
+    prints out the contents 
+    of a given array
+        - Parameters:
+            - a is the array
+            - length is the number of elements in a
+        - Returns:
+            - nothing
+    
+int piper(char *a): 
+    Parses the given string by the '|'
+    character and proceeds to check for notable exceptions. 
+    If there are none then the program forks, redirects in the
+    child process and reverts back in the parent process.
+        - Parameters:
+            - a, a string to parse
+        - Returns:
+            - An integer to terminate the function

@@ -9,6 +9,15 @@
 
 #define MAXCOMMANDS 50
 
+/*=======================================================
+void print(char* a[], int length): prints out the contents 
+of a given array
+    - Parameters:
+        - a is the array
+        - length is the number of elements in a
+    - Returns:
+        - nothing
+=======================================================*/
 void print(char* a[], int length)
 {
   int i = 0;
@@ -157,6 +166,16 @@ int run(char* a) {
 
 }
 
+/*=======================================================
+int piper(char *a): Parses the given string by the '|'
+character and proceeds to check for notable exceptions. 
+If there are none then the program forks, redirects in the
+child process and reverts back in the parent process.
+    - Parameters:
+        - a, a string to parse
+    - Returns:
+        - An integer to terminate the function
+=======================================================*/
 int piper(char *a){
     //deal with case of | at ending
     //testing
