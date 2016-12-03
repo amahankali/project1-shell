@@ -41,4 +41,5 @@ Functions
         -Parameters: char* command
         -Returns: an integer: returns -1 if the given string contains
         a syntax error of the form above, and 0 otherwise.
+        
 -In pipe.c

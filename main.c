@@ -74,6 +74,20 @@ int main () {
 	return 0;
 }
 
+/*=========================================================
+  noAdjSymbol(char* command): The goal of this function is to
+  catch syntax errors that arise from redirection and piping. If
+  there is a "|" character at the beginning of the string provided
+  in the command line, or if there is a ">" or "<" character directly
+  before a "|" character in the provided string, this function will
+  return -1. This is done by splitting the given command by spaces.
+  main() then uses this function to determine if the given command
+  string has a syntax error of this type.
+      -Parameters: char* command
+      -Returns: an integer: returns -1 if the given string contains
+      a syntax error of the form above, and 0 otherwise.
+==========================================================*/
+
 int noAdjSymbol(char* command)
 {
   int i = 0;
