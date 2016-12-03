@@ -14,6 +14,20 @@ int reply = 0;
 //returns -1 if there is a '>' or a '<' right before a '|' (separated by spaces)
 int noAdjSymbol(char* command);
 
+
+/*=========================================================
+main(): Starts by clearing the terminal and immediately 
+redirects to route. From there, it prints out the current 
+directory and asks for user input. It records this 
+information using the fgets function then uses the strsep
+function to form an array of semicolon divided sections of
+the input. The program loops through the array executing
+passing in each part of the input to the run function 
+(located in pipe.h)
+    -Parameters: none
+    -Returns: an integer to terminate the function
+==========================================================*/
+
 int main () {
     system("clear");
     printf("Shell—Version 1.0\n");
