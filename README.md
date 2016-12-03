@@ -14,6 +14,9 @@ Attempts
 - We attempted to replace fgets() with readline() as to allow autocompletion and usage of the arrow keys however, we started too late and we didn't want to risk any problems that could arise.
 - We wanted to implement other forms of redirection (>>, <<, etc.) however, we had trouble implementing basic redirection and ran out of time
 
+Bugs
+-After thorough testing, none that we know of
+
 Functions
 -In main.c
     main(): Starts by clearing the terminal and immediately 

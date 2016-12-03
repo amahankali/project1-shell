@@ -140,7 +140,8 @@ int run(char* a) {
       if(ret)
       {
         fprintf(stderr, "-bash: %s: command not found\n", buffer[0]);
-        kill(getpid(), SIGTERM);
+        exit(0);
+          return 1;
       }
       exit(0);
     }
