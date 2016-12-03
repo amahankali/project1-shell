@@ -155,8 +155,30 @@ int piper(char *a){
       return 1;
     }
 
+    //deal with case of | at ending
+    //testing
+    if(a[strlen(a) - 1] == '|') //checks if last character is '|'
+    {
+      //read the last command from stdin
+      char* aux = (char *) calloc(1, 50);
+
+      //printf("\n");
+      printf("> ");
+
+      fgets(aux, 50, stdin); if(aux[strlen(aux) - 1] == '\n') aux[strlen(aux) - 1] = 0;
+
+      strcat(a, " ");
+      strcat(a, aux);
+      free(aux);
+
+      //printf("There was an ending '|'. The new command will be: %s.\n", a);
+
+      return piper(a);
+    }
+
     char *second = (char *)malloc(256);
     second = strsep(&a, "|");
+
     int arr[2];
     pipe(arr);
     //int out = dup(STDOUT_FILENO);
