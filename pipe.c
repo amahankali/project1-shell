@@ -27,6 +27,19 @@ void print(char* a[], int length)
 
 int piper(char *a);
 
+/*======================================================
+int run(char *a):
+- Tests for possible exceptions including echo to see if
+it should decrease white space size or not. It then parses
+the string removing consecutive whitespaces and whitespaces
+at the beginning and end. After this it tests the exceptions
+cd and cd ~ to know if it should go back to the home directory
+and the exit function. If none of these have occurred it will
+execvp convert the parsed string to an array and execvp
+it.
+-Returns an integer
+-a is the user input string
+======================================================*/
 int run(char* a) {
   char *ans[50];
   char *n = calloc(1, strlen(a));

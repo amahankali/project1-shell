@@ -20,8 +20,8 @@ Bugs
 Functions
 
 In main.c
-    main(): 
-    Starts by clearing the terminal and immediately 
+main(): 
+    -Starts by clearing the terminal and immediately 
     redirects to route. From there, it prints out the current 
     directory and asks for user input. It records this 
     information using the fgets function then uses the strsep
@@ -33,7 +33,7 @@ In main.c
         -Returns: an integer to terminate the function
 
 noAdjSymbol(char* command): 
-    The goal of this function is to
+    -The goal of this function is to
     catch syntax errors that arise from redirection and piping. If
     there is a "|" character at the beginning of the string provided
     in the command line, or if there is a ">" or "<" character directly
@@ -48,8 +48,7 @@ noAdjSymbol(char* command):
 -In pipe.c
     
 void print(char* a[], int length): 
-    prints out the contents 
-    of a given array
+    - prints out the contents of a given array
         - Parameters:
             - a is the array
             - length is the number of elements in a
@@ -57,7 +56,7 @@ void print(char* a[], int length):
             - nothing
     
 int piper(char *a): 
-    Parses the given string by the '|'
+    -Parses the given string by the '|'
     character and proceeds to check for notable exceptions. 
     If there are none then the program forks, redirects in the
     child process and reverts back in the parent process.
@@ -67,8 +66,7 @@ int piper(char *a):
             - An integer to terminate the function
 
 int run(char *a):
-    
-    We implemented redirection by separating the command string by spaces, then
+    - We implemented redirection by separating the command string by spaces, then
     scanning through the string. Each time we encountered a ">", we used dup2 to
     make the file descriptor 1 point to the file descriptor of the following token,
     which was the name of a file. Similarly, each time we encountered a "<", we used
@@ -76,6 +74,14 @@ int run(char *a):
     token. At the end of the scan, the files that the file descriptors 0 and 1 point
     to will be decided. Finally, we used execvp to execute the given commands after
     accounting for the ">" and "<" symbols.
+    - Also tests for possible exceptions including echo to see if
+    it should decrease white space size or not. It then parses
+    the string removing consecutive whitespaces and whitespaces
+    at the beginning and end. After this it tests the exceptions
+    cd and cd ~ to know if it should go back to the home directory
+    and the exit function. If none of these have occurred it will
+    execvp convert the parsed string to an array and execvp
+    it.
         - Parameters: 
             - char* a, the command
         - Returns:
