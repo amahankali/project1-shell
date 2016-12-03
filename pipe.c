@@ -147,6 +147,14 @@ int run(char* a) {
 }
 
 int piper(char *a){
+    //error message: | at the beginning
+    //testing
+    if(*a == '|')
+    {
+      printf("-bash: syntax error near unexpected token `|'\n");
+      return 1;
+    }
+
     char *second = (char *)malloc(256);
     second = strsep(&a, "|");
     int arr[2];
