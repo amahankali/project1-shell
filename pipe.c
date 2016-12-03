@@ -108,7 +108,8 @@ int run(char* a) {
           if(newFD == -1)
           {
             fprintf(stderr, "-bash: error: %s\n", strerror(errno));
-            exit(0);
+            kill(getpid(), SIGTERM);
+            //exit(0);
           }
           dup2(newFD, 1);
           j += 2;
@@ -120,7 +121,8 @@ int run(char* a) {
           if(newFD == -1)
           {
             fprintf(stderr, "-bash: %s: %s\n", inFile, strerror(errno));
-            exit(0);
+            kill(getpid(), SIGTERM);
+            //exit(0);
           }
           dup2(newFD, 0);
           j += 2;
@@ -135,10 +137,18 @@ int run(char* a) {
       buffer[bufferLen] = 0;
 
       int ret = execvp(buffer[0], buffer);
-      if(ret) fprintf(stderr, "-bash: %s: command not found\n", buffer[0]);
+      if(ret)
+      {
+        fprintf(stderr, "-bash: %s: command not found\n", buffer[0]);
+        kill(getpid(), SIGTERM);
+      }
       exit(0);
     }
-    else {int reply = wait(&status);}
+    else
+    {
+      int reply = wait(&status);
+      if(WIFSIGNALED(status)) kill(getpid(), SIGTERM);
+    }
     ////////////////////////////////////////////////////////////////////
 
     return 1;
@@ -181,10 +191,12 @@ int piper(char *a){
     if (f == 0){
         dup2(arr[1], STDOUT_FILENO); 
         run(second);
+        //fprintf(stderr, "%s\n", second);
         exit(0);
     } 
     else{
         wait(&status);
+        if(WIFSIGNALED(status)) return 1;
         dup2(arr[0], STDIN_FILENO);
         close(arr[1]);
         run(a);

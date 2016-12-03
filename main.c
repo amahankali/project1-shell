@@ -22,7 +22,6 @@ int main () {
     chdir(getenv("HOME"));
 	while(1) //inside of while loop reads one-line instruction, splits it by ';', and gives the pieces to singleCommand function
 	{
-
         if(reply == -1){return 0;}
         char buff[PATH_MAX + 1];
         char *dir = getcwd(buff, PATH_MAX);
