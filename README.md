@@ -65,3 +65,19 @@ int piper(char *a):
             - a, a string to parse
         - Returns:
             - An integer to terminate the function
+
+int run(char *a):
+    
+    We implemented redirection by separating the command string by spaces, then
+    scanning through the string. Each time we encountered a ">", we used dup2 to
+    make the file descriptor 1 point to the file descriptor of the following token,
+    which was the name of a file. Similarly, each time we encountered a "<", we used
+    dup2 to make the file descriptor 0 point to the file descriptor of the following
+    token. At the end of the scan, the files that the file descriptors 0 and 1 point
+    to will be decided. Finally, we used execvp to execute the given commands after
+    accounting for the ">" and "<" symbols.
+        - Parameters: 
+            - char* a, the command
+        - Returns:
+            - An integer, terminating the function.
+
