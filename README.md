@@ -15,7 +15,11 @@ Attempts
 - We wanted to implement other forms of redirection (>>, <<, etc.) however, we had trouble implementing basic redirection and ran out of time
 
 Bugs
--After thorough testing, none that we know of
+- Entering a file that does not exist will cause a command 
+that should have crashed not to crash.
+- Entering a ">" or "<" symbol before a "|" symbol, or a "|"
+symbol at the beginning of a command, will cause a command
+that should have crashed not to crash.
 
 Functions
 
