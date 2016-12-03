@@ -17,6 +17,8 @@ Attempts
 Bugs
 - Entering a file that does not exist can cause a command 
 that should have crashed not to crash.
+- Adding whitespace before echo alters the statement that should
+be printed by reduceing any consecutive spaces in it
 
 Functions
 
