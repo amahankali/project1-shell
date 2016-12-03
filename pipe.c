@@ -72,7 +72,7 @@ int run(char* a) {
             chdir(getenv("HOME"));
         }
         else if(chdir(ans[1])!=0){
-            printf("Error: No such directory\n");
+            fprintf(stderr, "Error: No such directory\n");
         }
         return 1;
     }
@@ -85,7 +85,7 @@ int run(char* a) {
     //case of ">" or "<" at end
     if(strcmp(ans[i - 1], ">") == 0 || strcmp(ans[i - 1], "<") == 0)
     {
-      printf("-bash: syntax error near unexpected token `newline'\n");
+      fprintf(stderr, "-bash: syntax error near unexpected token `newline'\n");
       return 1;
     }
 
@@ -107,7 +107,7 @@ int run(char* a) {
           int newFD = open(outFile, O_TRUNC | O_WRONLY | O_RDONLY | O_CREAT, 0644);
           if(newFD == -1)
           {
-            printf("-bash: error: %s\n", strerror(errno));
+            fprintf(stderr, "-bash: error: %s\n", strerror(errno));
             exit(0);
           }
           dup2(newFD, 1);
@@ -119,7 +119,7 @@ int run(char* a) {
           int newFD = open(inFile, O_RDONLY);
           if(newFD == -1)
           {
-            printf("-bash: %s: %s\n", inFile, strerror(errno));
+            fprintf(stderr, "-bash: %s: %s\n", inFile, strerror(errno));
             exit(0);
           }
           dup2(newFD, 0);
@@ -135,7 +135,7 @@ int run(char* a) {
       buffer[bufferLen] = 0;
 
       int ret = execvp(buffer[0], buffer);
-      if(ret) printf("-bash: %s: command not found\n", buffer[0]);
+      if(ret) fprintf(stderr, "-bash: %s: command not found\n", buffer[0]);
       exit(0);
     }
     else {int reply = wait(&status);}
@@ -147,16 +147,9 @@ int run(char* a) {
 }
 
 int piper(char *a){
-    //error message: | at the beginning
-    //testing
-    if(*a == '|')
-    {
-      printf("-bash: syntax error near unexpected token `|'\n");
-      return 1;
-    }
-
     //deal with case of | at ending
     //testing
+    
     if(a[strlen(a) - 1] == '|') //checks if last character is '|'
     {
       //read the last command from stdin
