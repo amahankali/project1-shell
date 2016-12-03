@@ -82,6 +82,14 @@ int run(char* a) {
     }
 
     ///////////////////////////Do redirection///////////////////////////
+    //case of ">" or "<" at end
+    if(strcmp(ans[i - 1], ">") == 0 || strcmp(ans[i - 1], "<") == 0)
+    {
+      printf("-bash: syntax error near unexpected token `newline'\n");
+      return 1;
+    }
+
+
     int f = fork();
     int status;
     if(f == 0)
