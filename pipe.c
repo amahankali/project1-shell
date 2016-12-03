@@ -19,10 +19,10 @@ void print(char* a[], int length)
 int piper(char *a);
 
 int run(char* a) {
-	char *ans[50];
-	char *n = calloc(1, strlen(a));
-	int i=0;
-	int j=0;
+  char *ans[50];
+  char *n = calloc(1, strlen(a));
+  int i=0;
+  int j=0;
     if((*a == '#' && *(a+1) == '#' && *(a + 2)=='#' ) || *a == 0){return 1;}
     if((*a == 'e' || *a == 'E') && (*(a + 1) == 'c' || *(a + 1) == 'C')
        && (*(a + 2) == 'h' || *(a + 2) == 'H') && (*(a + 3) == 'o' || *(a + 3) == 'O')){
@@ -30,24 +30,24 @@ int run(char* a) {
         printf("%s\n",a);
         return 1;
     }
-	while(*(a+i)){
- 		if ((*(a + i) == ' ' && j == 0) ||
-			(i!=0 && *(a + i - 1) == ' ' && *(a + i) == ' ')){
-      		i++;
-      		continue;
-    	}
-    	else{
-      		*(n+j) = *(a+i);
-      		i++;
-      		j++;
-    	}
-  	}
+  while(*(a+i)){
+    if ((*(a + i) == ' ' && j == 0) ||
+      (i!=0 && *(a + i - 1) == ' ' && *(a + i) == ' ')){
+          i++;
+          continue;
+      }
+      else{
+          *(n+j) = *(a+i);
+          i++;
+          j++;
+      }
+    }
 
-  	if(j > 0 && *(n+j - 1)  == ' '){
-    	//printf("s");
-    	*(n+j-1) = 0;
-  	}
-  	i=0;
+    if(j > 0 && *(n+j - 1)  == ' '){
+      //printf("s");
+      *(n+j-1) = 0;
+    }
+    i=0;
     while(*(n+i)){
         if(*(n+i) == '|'){
             return piper(n);
@@ -55,18 +55,18 @@ int run(char* a) {
         i++;
     }
     i = 0;
-  	while(n){ 
-    	char *s;
-    	s = strsep(&n, " ");
-    	ans[i] = s;
-    	//printf("%s %s\n", s, ans[i]);
-    	i++;
-  	}
+    while(n){ 
+      char *s;
+      s = strsep(&n, " ");
+      ans[i] = s;
+      //printf("%s %s\n", s, ans[i]);
+      i++;
+    }
   
-  	ans[i] = 0;
+    ans[i] = 0;
 
-  	if(strcmp(ans[0], "cd") == 0)
-  	{
+    if(strcmp(ans[0], "cd") == 0)
+    {
         //printf("%s\n", ans[1]);
         if(ans[1] == NULL || !strcmp(ans[1],"~")){
             chdir(getenv("HOME"));
@@ -76,10 +76,10 @@ int run(char* a) {
         }
         return 1;
     }
-  	if(strcmp(ans[0], "exit") == 0)
-  	{
+    if(strcmp(ans[0], "exit") == 0)
+    {
         exit(0);
-  	}
+    }
 
     ///////////////////////////Do redirection///////////////////////////
     int f = fork();
