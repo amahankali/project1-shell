@@ -2,7 +2,7 @@
 # By Arvind Mahankali, Brandon Huang and Will Ostlund
 
 Features
-- All of the critera listed on the (website)[http://www.stuycs.org/courses/mks65/dw/projects/project1gettingoutofyourshell]
+- All of the critera listed on the [website](http://www.stuycs.org/courses/mks65/dw/projects/project1gettingoutofyourshell)
     - It is important to note that out program will accept multiple pipes and can be redirected multiple times
     - We parse the user's input as to not restrict the amount of whitespace the can be add
         - We had to parse differently when the echo function is called
